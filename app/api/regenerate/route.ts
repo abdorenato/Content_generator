@@ -58,7 +58,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const parsed = JSON.parse(textBlock.text);
+    // Strip markdown code fences if present
+    const raw = textBlock.text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
+    const parsed = JSON.parse(raw);
 
     // Enforce bordão even if API somehow returns it
     if ("bordao" in parsed) {

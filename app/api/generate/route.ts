@@ -36,7 +36,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const parsed: ScriptBlocks = JSON.parse(textBlock.text);
+    // Strip markdown code fences if present
+    const raw = textBlock.text.replace(/^```(?:json)?\s*\n?/i, "").replace(/\n?```\s*$/i, "").trim();
+    const parsed: ScriptBlocks = JSON.parse(raw);
     // Always enforce the fixed bordão
     parsed.bordao = "Calma, criatura.";
 
